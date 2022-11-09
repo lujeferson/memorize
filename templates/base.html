@@ -1,0 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>memorize</title>
+        <link rel="stylesheet" href="{% static '/styles/style.css' %}">
+    </head>
+
+    <body>
+        <div id="cabecalho">{% include 'partials/_cabecalho.html' %}</div>
+        <div id="menu">{% include 'partials/_menu.html' %}</div>
+        {% include 'partials/_alertas.html' %}
+        <div id="conteudo">{% block content %}{% endblock %}</div>
+        <div id="rodape">{% include 'partials/_rodape.html' %}</div>
+    </body>
+
+</html>

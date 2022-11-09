@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="cadastro">
+    <h1>Dados cadastrais</h1>
+
+    <form action="{% url 'usuarios:cadastro' %}" method="POST">
+        {% csrf_token %}
+        <div class="col-12 col-lg-12">
+            <label for="nome_receita"><b>Nome</b></label>
+            <input type="text" name="nome" placeholder="Informe seu primeiro nome" required>
+        </div>
+        <div class="col-12 col-lg-12">
+            <label for="email"><b>E-mail</b></label>
+            <input type="email" name="email" placeholder="Informe seu e-mail" required>
+        </div>
+        <div class="col-12 col-lg-6">
+            <label for="senha"><b>Senha</b></label>
+            <input type="password" name="senha" placeholder="Digite sua senha" required>
+        </div>
+        <div class="col-12 col-lg-6">
+            <label for="senha2"><b>Confirme a senha</b></label>
+            <input type="password" name="senha2" placeholder="Confirme sua senha" required>
+        </div>
+        <div class="col-12 text-center">
+            <button class="btn btn-success" type="submit">Criar minha conta</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

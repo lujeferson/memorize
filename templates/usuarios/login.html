@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="login">
+    <h1>Login</h1>
+
+    <form action="{% url 'usuarios:login' %}" method="POST">
+        {% csrf_token %}
+        <div class="col-12 col-lg-12">
+            <label for="email"><b>E-mail</b></label>
+            <input type="text" id="email" name="email" placeholder="E-mail cadastrado" required>
+        </div>
+        <div class="col-12 col-lg-12">
+            <label for="senha"><b>Senha</b></label>
+            <input id="senha" type="password" name="senha" placeholder="Senha" required>
+        </div>
+        <div class="col-12 text-center">
+            <button class="btn btn-success" type="submit">Entrar</button> ou
+            <a href="{% url 'usuarios:cadastro' %}">Cadastrar-se</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
