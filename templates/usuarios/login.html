@@ -2,24 +2,27 @@
 {% load static %}
 {% block content %}
 
-<div class="login">
-    <h1>Login</h1>
+    <div class="container m-2">
+        <div class="d-flex justify-content-left m-l-2">
+            <h1>Login</h1>
+        </div>
 
-    <form action="{% url 'usuarios:login' %}" method="POST">
-        {% csrf_token %}
-        <div class="col-12 col-lg-12">
-            <label for="email"><b>E-mail</b></label>
-            <input type="text" id="email" name="email" placeholder="E-mail cadastrado" required>
+        <div class="d-flex justify-content-left m-l-2">
+            <form action="{% url 'usuarios:login' %}" method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="email" class="form-label">E-mail</label>
+                    <input type="text" id="email" name="email" class="form-control" placeholder="E-mail cadastrado" required>
+                </div>
+                <div class="mb-3">
+                    <label for="senha" class="form-label">Senha</label>
+                    <input id="senha" type="password" name="senha" class="form-control" placeholder="Senha" required>
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-success form-control mb-3" type="submit">Entrar</button>
+                    <a class="btn btn-outline-primary form-control" href="{% url 'usuarios:cadastro' %}">Cadastrar-se</a>
+                </div>
+            </form>
         </div>
-        <div class="col-12 col-lg-12">
-            <label for="senha"><b>Senha</b></label>
-            <input id="senha" type="password" name="senha" placeholder="Senha" required>
-        </div>
-        <div class="col-12 text-center">
-            <button class="btn btn-success" type="submit">Entrar</button> ou
-            <a href="{% url 'usuarios:cadastro' %}">Cadastrar-se</a>
-        </div>
-    </form>
-</div>
-
+    </div>
 {% endblock %}

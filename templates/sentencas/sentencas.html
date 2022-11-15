@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container m-2">
+    <div class="d-flex justify-content-left m-l-2">
+        <h1>Sentenças</h1>
+    </div>
+    <div class="d-flex justify-content-left m-l-2">
+        <table class="table table-striped table-borderless table-hover caption-top w-auto">
+            <thead class="table-dark">
+                <tr>
+                    <th>Sentença</th>
+                    <th>Autor</th>
+                    <th>Área</t>
+                    <th>Observações</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sentenca in sentencas %}
+                    <tr>
+                        <td>{{ sentenca.conteudo }}</td>
+                        <td>{{ sentenca.autor.nome }}</td>
+                        <td>{{ sentenca.area.nome }}</td>
+                        <td>{% if sentenca.observacoes %}{{ sentenca.observacoes }}{% endif %}</td>
+                        <td>
+                            <a href="{% url 'sentencas:editar_sentenca' sentenca.id %}" class="btn btn-primary btn-sm">Editar</a>
+                            <a href="{% url 'sentencas:excluir_sentenca' sentenca.id %}" class="btn btn-danger btn-sm"
+                            onclick="return confirm('Confirma exclusão?')">Excluir</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="d-flex justify-content-left m-l-2">
+        <!-- ##### Pagination ##### -->
+        {% if sentencas.has_other_pages %}
+            <ul class="pagination">
+                {% if sentencas.has_previous %}
+                    <li class="page-item">
+                        <a href="?page={{ sentencas.previous_page_number }}" class="page-link">&laquo;</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link">&laquo;</a>
+                    </li>
+                {% endif %}
+                {% for pagina in sentencas.paginator.page_range %}
+                    {% if sentencas.number == pagina %}
+                        <li class="page-item active">
+                            <a class="page-link">{{ pagina }}</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item">
+                            <a href="?page={{ pagina }}" class="page-link">{{ pagina }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if sentencas.has_next %}
+                    <li class="page-item">
+                        <a href="?page={{ sentencas.next_page_number }}" class="page-link">&raquo;</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link">&raquo;</a>
+                    </li>
+                {% endif %}
+            </ul>
+        {% endif %}
+        <!-- ##### Pagination End ##### -->
+    </div>
+    <div class="d-flex justify-content-left m-l-2">
+        <a href="{% url 'sentencas:criar_sentenca' %}" class="btn btn-outline-primary">Criar Sentença</a>
+    </div>
+</div>
+
+{% endblock %}

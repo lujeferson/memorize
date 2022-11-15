@@ -48,35 +48,10 @@ table {
 }
 /* FIM */
 
-
-#cabecalho {
-    background-color: darkgray;
-}
-
-#menu {
-	background-color: black;
-	color: yellow;
-}
-
-#menu a {
-	color: whitesmoke;
+tr:hover{
+	background-color: yellow;
 }
 
 #rodape {
     background-color: lightgray;
 }
-
-#cabecalho, #rodape, #menu {
-    padding: 1em;
-}
-
-#alertas {
-	background-color: greenyellow;
-}
-
-#cabecalho h1 {
-	display: inline;
-	font-weight: 900;
-	font-size: x-large;
-}
-

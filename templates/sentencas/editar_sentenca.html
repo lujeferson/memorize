@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="container m-2">
+        <div class="d-flex justify-content-left m-l-2">
+            <h1>Editar Sentença</h1>
+        </div>
+    
+        <div class="d-flex justify-content-left m-l-2">
+            <form action="{% url 'sentencas:atualizar_sentenca' %}" method="POST">
+                {% csrf_token %}
+                <input type="text" id="sentenca_id" name="sentenca_id" value="{{sentenca.id}}" hidden>
+                <div class="mb-3">
+                    <label for="conteudo" class="form-label">Conteúdo</label>
+                    <textarea id="conteudo" name="conteudo" class="form-control" placeholder="Conteúdo da Sentença" rows="4" autofocus required>{{ sentenca.conteudo }}</textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="autor_id" class="form-label">Autor</label>
+                    {% if autores %}
+                        <select id="autor_id" name="autor_id" class="form-select" required>
+                            {% for autor in autores %}
+                                <option value="{{ autor.id }}" {% if autor.id == sentenca.autor.id %} selected {% endif %}>{{ autor.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    {% endif %}
+                    <a href="{% url 'sentencas:criar_autor' %}" class="btn btn-sm btn-outline-secondary form-control">Criar Autor</a>
+                </div>
+                <div class="mb-3">
+                    <label for="area_id" class="form-label">Área do Conhecimento</label>
+                    {% if areas %}
+                        <select id="area_id" name="area_id" class="form-select" required>
+                            {% for area in areas %}
+                                <option value="{{ area.id }}" {% if area.id == sentenca.area.id %} selected {% endif %}>{{ area.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    {% endif %}
+                    <a href="{% url 'sentencas:criar_area' %}" class="btn btn-sm btn-outline-secondary form-control">Criar Área</a>
+                </div>
+                <div class="mb-3">
+                    <label for="observacoes" class="form-label">Observações</label>
+                    <input type="text" name="observacoes" class="form-control" placeholder="Observações" value="{{ sentenca.observacoes }}">
+                </div>
+                <button type="submit" class="btn btn-primary form-control">Salvar</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

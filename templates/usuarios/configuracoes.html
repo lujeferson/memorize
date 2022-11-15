@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="container m-2">
+        <div class="d-flex justify-content-left m-l-2">
+            <h1>Meus dados</h1>
+        </div>
+
+        <div class="d-flex justify-content-left m-l-2 flex-column">
+            <div class="">
+                <label>Nome:</label> {{ user.first_name }}
+            </div>
+            <div class="">
+                <label>E-mail:</label> {{ user.email }}
+            </div>
+        </div>
+    </div>
+
+    <div class="container m-2 border-top border-3">
+        <div class="d-flex justify-content-left m-l-2">
+            <h1>Minhas configurações</h1>
+        </div>
+
+        <div class="d-flex justify-content-left m-l-2 flex-column">
+            <form action="{% url 'usuarios:definir_configuracoes' %}" method="POST" id="configuracoes_form">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="relatorios_por_dia_value" class="form-label">Relatórios por dia: </label>
+                    {% if configuracoes %}
+                        <select id="relatorios_por_dia_value" name="relatorios_por_dia_value" class="form-select" required>
+                            {% for valor, opcao in configuracoes.RELATORIOS_POR_DIA_CHOICES %}
+                                <option value="{{ valor }}" {% if configuracoes.relatorios_por_dia == valor %} selected {% endif %}>{{ opcao }}</option>
+                            {% endfor %}
+                        </select>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <label for="tipo_de_relatorio_value" class="form-label">Tipo de relatório: </label>
+                    {% if configuracoes %}
+                        <select id="tipo_de_relatorio_value" name="tipo_de_relatorio_value" class="form-select" required>
+                            {% for valor, opcao in configuracoes.TIPO_DE_RELATORIO_CHOICES %}
+                                <option value="{{ valor }}" {% if configuracoes.tipo_de_relatorio == valor %} selected {% endif %}>{{ opcao }}</option>
+                            {% endfor %}
+                        </select>
+                    {% endif %}
+                </div>
+                <button type="submit" class="btn btn-primary form-control" form="configuracoes_form">Atualizar configurações</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container m-2 border-top border-3">
+        <div class="d-flex justify-content-left m-l-2">
+            <h1>Alterar senha</h1>
+        </div>
+
+        <div class="d-flex justify-content-left m-l-2 flex-column">
+            <form action="{% url 'usuarios:redefinir_senha' %}" method="POST" id="senhas_form">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="senha" class="form-label"><b>Senha</b></label>
+                    <input type="password" name="senha" class="form-control" placeholder="Digite sua senha" required>
+                </div>
+                <div class="mb-3 border-top border-1">
+                    <label for="senha_nova" class="form-label"><b>Senha nova</b></label>
+                    <input type="password" name="senha_nova" class="form-control" placeholder="Digite sua senha nova" required>
+                </div>
+                <div class="mb-3">
+                    <label for="senha_nova2" class="form-label"><b>Confirme a senha nova</b></label>
+                    <input type="password" name="senha_nova2" class="form-control" placeholder="Confirme sua senha nova" required>
+                </div>
+                <button type="submit" class="btn btn-primary form-control" form="senhas_form">Salvar nova senha</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="container m-2">
+        <div class="d-flex justify-content-left m-l-2">
+            <h1>Novo Autor</h1>
+        </div>
+
+        <div class="d-flex justify-content-left m-l-2">
+            <form action="{% url 'sentencas:criar_autor' %}" method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="nome" class="form-label">Nome</label>
+                    <input type="text" name="nome" class="form-control" placeholder="Nome do Autor" autofocus required>
+                </div>
+                <button type="submit" class="btn btn-primary form-control">Criar</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -48,58 +48,10 @@ table {
 }
 /* FIM */
 
-body {
-    margin: 10px;
-	padding: 10px
-}
-
-#cabecalho {
-    background-color: darkgray;
-}
-
-#menu {
-	background-color: black;
-	color: yellow;
-}
-
-#menu a {
-	color: whitesmoke;
+tr:hover{
+	background-color: yellow;
 }
 
 #rodape {
     background-color: lightgray;
-}
-
-#cabecalho, #rodape, #menu {
-    padding: 1em;
-}
-
-#alertas {
-	background-color: greenyellow;
-}
-
-#cabecalho h1 {
-	display: inline;
-	font-weight: 900;
-	font-size: x-large;
-}
-
-.separador {
-	margin: 3px;
-	padding: 3px;
-}
-
-table, th, td {
-	margin: 3px;
-	padding: 3px;
-	border: 1px solid;
-}
-
-table {
-	border-collapse: collapse;
-	max-width: 90%;
-}
-
-tbody tr:hover {
-	background-color: yellow;
 }

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="container m-2">
+        <div class="d-flex justify-content-left m-l-2">
+            <h1>Editar Área de Conhecimento</h1>
+        </div>
+
+        <div class="d-flex justify-content-left m-l-2">
+            <form action="{% url 'sentencas:atualizar_area' %}" method="POST">
+                {% csrf_token %}
+                <input type="text" id="area_id" name="area_id" value="{{area.id}}" hidden>
+                <div class="mb-3">
+                    <label for="nome" class="form-label">Nome</label>
+                    <input type="text" id="nome" name="nome" class="form-control" placeholder="Nome da Área" value="{{area.nome}}" autofocus required>
+                </div>
+                <button type="submit" class="btn btn-primary form-control">Salvar</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
