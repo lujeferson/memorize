@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import auth, messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Autor, Area, Sentenca
+import random
 
 # Create your views here.
 # INÍCIO: Sentenças -----------------------------------------------------------
@@ -19,7 +20,9 @@ def sentencas(request):
     page = request.GET.get('page')
     sentencas_por_pagina = paginator.get_page(page)
 
-    contexto = {'sentencas': sentencas_por_pagina}
+    sentenca_aleatoria = get_sentenca_aleatoria(request)
+
+    contexto = {'sentencas': sentencas_por_pagina,'sentenca_aleatoria':sentenca_aleatoria}
     return render(request, 'sentencas/sentencas.html', contexto)
 
 
@@ -326,6 +329,15 @@ def excluir_area(request, area_id):
 
 def index(request):
     return redirect('sentencas:sentencas')
+
+
+def get_sentenca_aleatoria(request):
+    if __usuario_nao_logado(request):
+        return None
+
+    usuario = request.user
+    sentenca = Sentenca.objects.filter(usuario=usuario).order_by("?").first()
+    return sentenca
 
 
 def __usuario_nao_logado(request):

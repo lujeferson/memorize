@@ -2,30 +2,41 @@
 {% load static %}
 {% block content %}
 
-    <div class="container m-2">
-        <div class="d-flex justify-content-left m-l-2">
-            <h1>Login</h1>
+    <div class="d-flex flex-row">
+        <div class="flex-shrink-0 m-2">
+            <div class="d-flex justify-content-left m-l-2">
+                <h1>Login</h1>
+            </div>
+    
+            <div class="d-flex justify-content-left m-l-2">
+                <form action="{% url 'usuarios:login' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="email" class="form-label">E-mail</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="E-mail cadastrado" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="senha" class="form-label">Senha</label>
+                        <input id="senha" type="password" name="senha" class="form-control" placeholder="Senha">
+                    </div>
+                    <div class="mb-3">
+                        <button class="btn btn-success form-control mb-3" type="submit">Entrar</button>
+                        <a class="btn btn-outline-primary form-control" href="{% url 'usuarios:cadastro' %}">Cadastrar-se</a>
+                    </div>
+                    <div class="mb-3">
+                        <button class="btn btn-sm btn-link form-control" type="submit" formaction="{% url 'usuarios:recuperar_senha' %}">Recuperar senha</>
+                    </div>
+                </form>
+            </div>
         </div>
 
-        <div class="d-flex justify-content-left m-l-2">
-            <form action="{% url 'usuarios:login' %}" method="POST">
-                {% csrf_token %}
-                <div class="mb-3">
-                    <label for="email" class="form-label">E-mail</label>
-                    <input type="email" id="email" name="email" class="form-control" placeholder="E-mail cadastrado" required>
-                </div>
-                <div class="mb-3">
-                    <label for="senha" class="form-label">Senha</label>
-                    <input id="senha" type="password" name="senha" class="form-control" placeholder="Senha">
-                </div>
-                <div class="mb-3">
-                    <button class="btn btn-success form-control mb-3" type="submit">Entrar</button>
-                    <a class="btn btn-outline-primary form-control" href="{% url 'usuarios:cadastro' %}">Cadastrar-se</a>
-                </div>
-                <div class="mb-3">
-                    <button class="btn btn-sm btn-link form-control" type="submit" formaction="{% url 'usuarios:recuperar_senha' %}">Recuperar senha</>
-                </div>
-            </form>
+        <div class="flex-grow-1 m-2">
+            <h1>Qual o objetivo da plataforma?</h1>
+            <p>Para memorizar qualquer assunto, é necessária repetição.</p>
+            <p>A intenção da plataforma é permitir o registro, inicialmente, de anotações em forma de frases/sentenças, para que sejam enviadas diariamente, de forma aleatória, no e-mail cadastrado, permitindo ter contato com o assunto de maneira contínua.</p>
+            <p>Junto das anotações, também é importante contextualizar sua origem, o que pode ser feito através da associação com autores/fontes e respectivas áreas do conhecimento.</p>
+            <p>Cadastre seus autores e as áreas de conhecimento em estudo, adicione as sentenças/frases que resumem tópicos importantes e configure a frequência dos e-mails para recebê-las aleatoriamente.</p>
+            <p>Mas, pode ser também aquele dito popular, ou mesmo aquela frase de efeito que seja considerada importante.</p>
         </div>
     </div>
 {% endblock %}

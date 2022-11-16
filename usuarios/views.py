@@ -157,17 +157,18 @@ def recuperar_senha(request):
             url_reset = reverse('usuarios:definir_senha') + query_string
             subject = 'MEMOR!ZE: Reset de senha'
             message = 'Seu token de recuperação de senha é: ' + recuperador.token
-            from_email = 'noreply@memorize.pro.br'
+            # from_email = 'noreply@memorize.pro.br'
+            from_email = 'lujeferson@gmail.com'
             recipient_list = [usuario.email,]
-            html_message = f'Para recuperar sua senha, utilize o seguinte endereço: <a href={url_reset}>{url_reset}</a>'
-            # send_mail(
-            #     subject=subject,
-            #     message=message,
-            #     from_email=from_email,
-            #     recipient_list=recipient_list,
-            #     fail_silently=False,
-            #     html_message=html_message,
-            # )
+            # html_message = f'Para recuperar sua senha, utilize o seguinte endereço: <a href={url_reset}>{url_reset}</a>'
+            send_mail(
+                subject=subject,
+                message=message,
+                from_email=from_email,
+                recipient_list=recipient_list,
+                fail_silently=False,
+                html_message=html_message,
+            )
             # TODO: resolver o problema do servidor de email
             print(f'\n\n\n{html_message}\n\n\n')
 
