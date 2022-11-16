@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import secrets
 
 # Create your models here.
 class Configuracoes_Usuario(models.Model):
@@ -34,3 +35,13 @@ class Configuracoes_Usuario(models.Model):
         default=SIMPLES,
         choices=TIPO_DE_RELATORIO_CHOICES
     )
+
+class RecuperadorDeSenha(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, editable=False)
+    token =  models.CharField(max_length=128, help_text='Token de recuperação de senha')
+
+    @staticmethod
+    def gerar_token():
+        """Somente gera o token, não atribui"""
+        # https://docs.python.org/3/library/secrets.html
+        return secrets.token_urlsafe(64)

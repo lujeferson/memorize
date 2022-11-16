@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import auth, messages
-from .models import Configuracoes_Usuario
+from django.core.mail import send_mail
+from django.urls import reverse
+from .models import Configuracoes_Usuario, RecuperadorDeSenha
 
 # Create your views here.
 def cadastro(request):
@@ -44,8 +46,7 @@ def cadastro(request):
 
 def login(request):
     if request.user.is_authenticated:
-        messages.success(request, 'Você já está logado')
-        return redirect('usuarios:configuracoes')
+        return redirect('home')
 
     if request.method != 'POST':
         return render(request, 'usuarios/login.html')
@@ -133,6 +134,75 @@ def redefinir_senha(request):
     return redirect('usuarios:configuracoes')
 
 
+def recuperar_senha(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+
+        try:
+            usuario = User.objects.get(email=email)
+        except User.DoesNotExist:
+            usuario = None
+
+        recuperador = None
+        if usuario:
+            try:
+                recuperador = RecuperadorDeSenha.objects.get(usuario=usuario)
+            except RecuperadorDeSenha.DoesNotExist:
+                token = RecuperadorDeSenha.gerar_token()
+                recuperador = RecuperadorDeSenha(usuario=usuario, token=token)
+                recuperador.save()
+
+        if recuperador:
+            query_string = '?reset=' + recuperador.token
+            url_reset = reverse('usuarios:definir_senha') + query_string
+            subject = 'MEMOR!ZE: Reset de senha'
+            message = 'Seu token de recuperação de senha é: ' + recuperador.token
+            from_email = 'noreply@memorize.pro.br'
+            recipient_list = [usuario.email,]
+            html_message = f'Para recuperar sua senha, utilize o seguinte endereço: <a href={url_reset}>{url_reset}</a>'
+            # send_mail(
+            #     subject=subject,
+            #     message=message,
+            #     from_email=from_email,
+            #     recipient_list=recipient_list,
+            #     fail_silently=False,
+            #     html_message=html_message,
+            # )
+            # TODO: resolver o problema do servidor de email
+            print(f'\n\n\n{html_message}\n\n\n')
+
+    messages.success(request, 'Solicitação concluída com sucesso')
+    return redirect('usuarios:login')
+
+
+def definir_senha(request):
+    if not __usuario_nao_logado(request):
+        return redirect('usuarios:login')
+
+    if request.method == 'GET':
+        token = request.GET['reset']
+        contexto = {'token':token}
+        return render(request, 'usuarios/definir_senha.html', contexto)
+
+    if request.method == 'POST':
+        token = request.POST['token']
+        senha = request.POST['senha_nova']
+        senha2 = request.POST['senha_nova2']
+
+        try:
+            recuperador = RecuperadorDeSenha.objects.get(token=token)
+            usuario = recuperador.usuario
+            if senha == senha2:
+                usuario.set_password(senha)
+                usuario.save()
+                recuperador.delete()
+                messages.success(request, 'Senha alterada com sucesso')
+        except RecuperadorDeSenha.DoesNotExist:
+            print('Redirecionar para o get. Mas, como?')
+
+    return redirect('usuarios:login')
+
+
 def index(request):
     return redirect('usuarios:configuracoes')
 
@@ -147,6 +217,9 @@ def __campos_diferentes(campo, campo2):
 
 def __usuario_nao_logado(request):
     usuario_nao_logado = not request.user.is_authenticated
-    if usuario_nao_logado:
-        messages.error(request, 'Você precisa se logar no sistema')
     return usuario_nao_logado
+
+
+def __ignorar_mensagens_anteriores(request):
+    for message in messages.get_messages(request):
+        pass

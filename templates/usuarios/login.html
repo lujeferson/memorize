@@ -12,15 +12,18 @@
                 {% csrf_token %}
                 <div class="mb-3">
                     <label for="email" class="form-label">E-mail</label>
-                    <input type="text" id="email" name="email" class="form-control" placeholder="E-mail cadastrado" required>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="E-mail cadastrado" required>
                 </div>
                 <div class="mb-3">
                     <label for="senha" class="form-label">Senha</label>
-                    <input id="senha" type="password" name="senha" class="form-control" placeholder="Senha" required>
+                    <input id="senha" type="password" name="senha" class="form-control" placeholder="Senha">
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-success form-control mb-3" type="submit">Entrar</button>
                     <a class="btn btn-outline-primary form-control" href="{% url 'usuarios:cadastro' %}">Cadastrar-se</a>
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-sm btn-link form-control" type="submit" formaction="{% url 'usuarios:recuperar_senha' %}">Recuperar senha</>
                 </div>
             </form>
         </div>

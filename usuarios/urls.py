@@ -11,4 +11,6 @@ urlpatterns = [
     path('configuracoes', views.configuracoes, name='configuracoes'),
     path('configuracoes/definir', views.definir_configuracoes, name='definir_configuracoes'),
     path('senha/redefinir', views.redefinir_senha, name='redefinir_senha'),
+    path('senha/recuperar', views.recuperar_senha, name='recuperar_senha'),
+    path('senha/definir', views.definir_senha, name='definir_senha'),
 ]

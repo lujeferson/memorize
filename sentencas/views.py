@@ -330,8 +330,6 @@ def index(request):
 
 def __usuario_nao_logado(request):
     usuario_nao_logado = not request.user.is_authenticated
-    if usuario_nao_logado:
-        messages.error(request, 'Você precisa se logar no sistema')
     return usuario_nao_logado
 
 
