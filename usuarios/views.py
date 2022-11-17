@@ -167,10 +167,11 @@ def recuperar_senha(request):
                 from_email=from_email,
                 recipient_list=recipient_list,
                 fail_silently=False,
-                html_message=html_message,
+                # html_message=html_message,
             )
             # TODO: resolver o problema do servidor de email
-            print(f'\n\n\n{html_message}\n\n\n')
+            # print(f'\n\n\n{html_message}\n\n\n')
+            print(f'\n\n\n{message}\n\n\n')
 
     messages.success(request, 'Solicitação concluída com sucesso')
     return redirect('usuarios:login')

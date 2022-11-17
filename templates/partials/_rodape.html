@@ -1,12 +1,10 @@
 {% load static %}
 {% load sentencas_extras %}
 
-<div class="d-flex flex-column justify-content-center align-items-center text-bg-secondary p-2">
-    {% if sentenca_aleatoria %}
-        <span>{{ sentenca_aleatoria.conteudo }}</span>
-        <span>Autor: {{ sentenca_aleatoria.autor.nome }}</span>
-        <span>Área:  {{ sentenca_aleatoria.area.nome }}</span>
+<div id="rodape" class="d-flex flex-column justify-content-center align-items-center text-bg-secondary p-2">
+    {% if user.is_authenticated %}
+        {% exibir_sentenca_aleatoria user %}
     {% else %}
-        {% current_time %}
+        <span>{% current_time %}</span>
     {% endif %}
 </div>

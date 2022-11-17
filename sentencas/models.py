@@ -38,3 +38,22 @@ class Sentenca(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, editable=False)
     observacoes = models.CharField(max_length=256, help_text='Observações adicionais como página de livro, etc', null=True)
     ativo = models.BooleanField(default=True)
+
+    @classmethod
+    def get_sentenca_aleatoria(cls, usuario, area=None):
+        if area:
+            sentenca = Sentenca.objects.filter(usuario=usuario, area=area).order_by("?").first()
+        else:
+            sentenca = Sentenca.objects.filter(usuario=usuario).order_by("?").first()
+        return sentenca
+
+    @classmethod
+    def get_sentencas_aleatorias(cls, usuario):
+        areas_id_list = Sentenca.objects.filter(usuario=usuario).distinct('area').values_list('area', flat=True)
+
+        sentencas = []
+        for area in areas_id_list:
+            sentenca = cls.get_sentenca_aleatoria(usuario=usuario, area=area)
+            sentencas.append(sentenca)
+
+        return sentencas

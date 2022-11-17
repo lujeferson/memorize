@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import auth, messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Autor, Area, Sentenca
-import random
+
 
 # Create your views here.
 # INÍCIO: Sentenças -----------------------------------------------------------
@@ -20,9 +20,7 @@ def sentencas(request):
     page = request.GET.get('page')
     sentencas_por_pagina = paginator.get_page(page)
 
-    sentenca_aleatoria = get_sentenca_aleatoria(request)
-
-    contexto = {'sentencas': sentencas_por_pagina,'sentenca_aleatoria':sentenca_aleatoria}
+    contexto = {'sentencas': sentencas_por_pagina}
     return render(request, 'sentencas/sentencas.html', contexto)
 
 
@@ -331,13 +329,23 @@ def index(request):
     return redirect('sentencas:sentencas')
 
 
-def get_sentenca_aleatoria(request):
-    if __usuario_nao_logado(request):
-        return None
+# def get_sentenca_aleatoria(usuario, area=None):
+#     if area:
+#         sentenca = Sentenca.objects.filter(usuario=usuario, area=area).order_by("?").first()
+#     else:
+#         sentenca = Sentenca.objects.filter(usuario=usuario).order_by("?").first()
+#     return sentenca
 
-    usuario = request.user
-    sentenca = Sentenca.objects.filter(usuario=usuario).order_by("?").first()
-    return sentenca
+
+# def get_sentencas_aleatorias(usuario):
+#     areas_id_list = Sentenca.objects.filter(usuario=usuario).distinct('area').values_list('area', flat=True)
+
+#     sentencas = []
+#     for area in areas_id_list:
+#         sentenca = get_sentenca_aleatoria(usuario=usuario, area=area)
+#         sentencas.append(sentenca)
+
+#     return sentencas
 
 
 def __usuario_nao_logado(request):
