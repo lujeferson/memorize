@@ -153,25 +153,21 @@ def recuperar_senha(request):
                 recuperador.save()
 
         if recuperador:
-            query_string = '?reset=' + recuperador.token
+            query_string = '?r=' + recuperador.token  # r -> reset
             url_reset = reverse('usuarios:definir_senha') + query_string
             subject = 'MEMOR!ZE: Reset de senha'
-            message = 'Seu token de recuperação de senha é: ' + recuperador.token
-            # from_email = 'noreply@memorize.pro.br'
-            from_email = 'lujeferson@gmail.com'
+            message = recuperador.token
+            from_email = 'memorize@memorize.pro.br'
             recipient_list = [usuario.email,]
-            # html_message = f'Para recuperar sua senha, utilize o seguinte endereço: <a href={url_reset}>{url_reset}</a>'
+            html_message = f'Para recuperar sua senha, <a href=http://127.0.0.1:8000{url_reset}>clique aqui</a>'
             send_mail(
                 subject=subject,
                 message=message,
                 from_email=from_email,
                 recipient_list=recipient_list,
                 fail_silently=False,
-                # html_message=html_message,
+                html_message=html_message,
             )
-            # TODO: resolver o problema do servidor de email
-            # print(f'\n\n\n{html_message}\n\n\n')
-            print(f'\n\n\n{message}\n\n\n')
 
     messages.success(request, 'Solicitação concluída com sucesso')
     return redirect('usuarios:login')
@@ -182,7 +178,7 @@ def definir_senha(request):
         return redirect('usuarios:login')
 
     if request.method == 'GET':
-        token = request.GET['reset']
+        token = request.GET['r']
         contexto = {'token':token}
         return render(request, 'usuarios/definir_senha.html', contexto)
 
@@ -203,6 +199,23 @@ def definir_senha(request):
             print('Redirecionar para o get. Mas, como?')
 
     return redirect('usuarios:login')
+
+
+def excluir_conta(request):
+    if __usuario_nao_logado(request):
+        return redirect('usuarios:login')
+
+    if request.method == 'POST':
+        senha = request.POST['senha']
+        usuario = request.user
+        if usuario.check_password(senha):
+            messages.success(request, 'Conta e dados associados excluídos com sucesso')
+            usuario.delete()
+            return redirect('usuarios:login')
+        else: 
+            messages.error(request, 'Falha na exclusão da conta, senha incorreta')
+    
+        return redirect('usuarios:configuracoes')
 
 
 def index(request):

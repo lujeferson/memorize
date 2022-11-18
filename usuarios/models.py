@@ -6,10 +6,12 @@ import secrets
 class Configuracoes_Usuario(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, editable=False)
 
+    DESATIVADO = '0'
     MANHA = '1'
     MANHA_TARDE = '2'
     MANHA_TARDE_NOITE = '3'
     RELATORIOS_POR_DIA_CHOICES = [
+            (DESATIVADO, 'Não enviar relatório'),
             (MANHA, 'Manhã somente'),
             (MANHA_TARDE, 'Manhã e Tarde'),
             (MANHA_TARDE_NOITE, 'Manhã, Tarde e Noite'),
@@ -18,7 +20,7 @@ class Configuracoes_Usuario(models.Model):
         max_length=32,
         blank=False,
         help_text='Quantidade de relatórios a receber por dia',
-        default=1,
+        default=0,
         choices=RELATORIOS_POR_DIA_CHOICES
     )
 

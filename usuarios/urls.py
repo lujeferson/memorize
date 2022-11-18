@@ -12,5 +12,6 @@ urlpatterns = [
     path('configuracoes/definir', views.definir_configuracoes, name='definir_configuracoes'),
     path('senha/redefinir', views.redefinir_senha, name='redefinir_senha'),
     path('senha/recuperar', views.recuperar_senha, name='recuperar_senha'),
-    path('senha/definir', views.definir_senha, name='definir_senha'),
+    path('senha', views.definir_senha, name='definir_senha'), # necessário encurtar a url, devido a bloqueios de e-mail
+    path('excluir_conta', views.excluir_conta, name='excluir_conta'),
 ]

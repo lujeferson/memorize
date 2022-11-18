@@ -74,4 +74,21 @@
             </form>
         </div>
     </div>
+
+    <div class="container m-2 border-top border-3">
+        <div class="d-flex justify-content-left m-l-2">
+            <h1>Excluir conta</h1>
+        </div>
+
+        <div class="d-flex justify-content-left m-l-2 flex-column">
+            <form action="{% url 'usuarios:excluir_conta' %}" method="POST" id="excluir_form">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="senha" class="form-label"><b>Senha</b></label>
+                    <input type="password" name="senha" class="form-control" placeholder="Digite sua senha para permitir a exclusão da conta" required>
+                </div>
+                <button type="submit" class="btn btn-danger btn-lg form-control" onclick="return confirm('A conta e todos os dados associados a ela serão excluídos, sem possibilidade de recuperação. Confirma exclusão?')" form="excluir_form">Excluir conta</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}
