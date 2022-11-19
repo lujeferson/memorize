@@ -25,6 +25,7 @@
         <div class="d-flex justify-content-left m-l-2 flex-column">
             <form action="{% url 'usuarios:definir_configuracoes' %}" method="POST" id="configuracoes_form">
                 {% csrf_token %}
+                <p class="fst-italic m-1 p-1">Os horários dos relatórios serão, aproximadamente, às 8h (Manhã), 14h (Tarde) e 20h (Noite)</p>
                 <div class="mb-3">
                     <label for="relatorios_por_dia_value" class="form-label">Relatórios por dia: </label>
                     {% if configuracoes %}

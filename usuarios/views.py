@@ -156,10 +156,10 @@ def recuperar_senha(request):
             query_string = '?r=' + recuperador.token  # r -> reset
             url_reset = reverse('usuarios:definir_senha') + query_string
             subject = 'MEMOR!ZE: Reset de senha'
-            message = recuperador.token
+            message = f'Para recuperar sua senha, acesse o link: { request.scheme }://{ request.get_host() }{url_reset}'
             from_email = 'memorize@memorize.pro.br'
             recipient_list = [usuario.email,]
-            html_message = f'Para recuperar sua senha, <a href=http://127.0.0.1:8000{url_reset}>clique aqui</a>'
+            html_message = f'Para recuperar sua senha, <a href="{ request.scheme }://{ request.get_host() }{url_reset}">clique aqui</a>'
             send_mail(
                 subject=subject,
                 message=message,
@@ -169,7 +169,7 @@ def recuperar_senha(request):
                 html_message=html_message,
             )
 
-    messages.success(request, 'Solicitação concluída com sucesso')
+    messages.success(request, 'Solicitação concluída com sucesso. lembre-se de checar a caixa de spam, caso não tenha recebido o e-mail.')
     return redirect('usuarios:login')
 
 

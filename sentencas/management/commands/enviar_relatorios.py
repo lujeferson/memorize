@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from sentencas.models import Autor, Area, Sentenca
 from usuarios.models import Configuracoes_Usuario
+from datetime import datetime
 
 class Command(BaseCommand):
     help = 'Envia os Relatórios de Sentenças dos Usuários'
@@ -11,6 +12,8 @@ class Command(BaseCommand):
         parser.add_argument('periodo', nargs='+', type=int)
 
     def handle(self, *args, **options):
+        log = f'Início: {datetime.now()}'
+
         periodo = options['periodo'][0] # Cuidado, options retorna uma lista
         usuarios = User.objects.filter(is_superuser=False)
 
@@ -41,6 +44,11 @@ class Command(BaseCommand):
                 recipient_list=recipient_list,
                 fail_silently=False,
             )
+
+        log = f'{log}\nFim   : {datetime.now()}'
+        log = f'{log}\n' + (80 * '-') + '\n\n'
+        with open('logs/cron_enviar_relatorios.txt', 'a') as arquivo:
+            arquivo.write(log)
 
 
     def obter_configuracoes(self, usuario):
