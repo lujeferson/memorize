@@ -29,7 +29,7 @@
                 <div class="mb-3">
                     <label for="relatorios_por_dia_value" class="form-label">Relatórios por dia: </label>
                     {% if configuracoes %}
-                        <select id="relatorios_por_dia_value" name="relatorios_por_dia_value" class="form-select" required>
+                        <select id="relatorios_por_dia_value" name="relatorios_por_dia_value" class="form-select" autofocus required>
                             {% for valor, opcao in configuracoes.RELATORIOS_POR_DIA_CHOICES %}
                                 <option value="{{ valor }}" {% if configuracoes.relatorios_por_dia == valor %} selected {% endif %}>{{ opcao }}</option>
                             {% endfor %}
@@ -85,8 +85,8 @@
             <form action="{% url 'usuarios:excluir_conta' %}" method="POST" id="excluir_form">
                 {% csrf_token %}
                 <div class="mb-3">
-                    <label for="senha" class="form-label"><b>Senha</b></label>
-                    <input type="password" name="senha" class="form-control" placeholder="Digite sua senha para permitir a exclusão da conta" required>
+                    <label for="senha_excluir_conta" class="form-label"><b>Senha</b></label>
+                    <input type="password" name="senha_excluir_conta" class="form-control" placeholder="Digite sua senha para permitir a exclusão da conta" required>
                 </div>
                 <button type="submit" class="btn btn-danger btn-lg form-control" onclick="return confirm('A conta e todos os dados associados a ela serão excluídos, sem possibilidade de recuperação. Confirma exclusão?')" form="excluir_form">Excluir conta</button>
             </form>

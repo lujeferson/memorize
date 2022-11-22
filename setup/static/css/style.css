@@ -48,12 +48,21 @@ table {
 }
 /* FIM */
 
+/* Paleta de cores */
+/* 
+.color1 { #000000 };
+.color2 { #d8d8c0 };
+.color3 { #1693a5 };
+.color4 { #f0f0d8 };
+.color5 { #ffffff };
+*/
+
 tr:hover{
-	background-color: yellow;
+    background-color: #1693a5;
 }
 
-#rodape {
-    background-color: lightgray;
+.color2 {
+	background-color: #d8d8c0;
 }
 
 #rodape div {
@@ -61,8 +70,7 @@ tr:hover{
 }
 
 #rodape span.conteudo {
-	font-size: 1.5em;
-	text-shadow: 4px 4px 4px rgb(162, 195, 248);
+	font-size: 1.2em;
 	font-family: 'Dancing Script', cursive;
 }
 

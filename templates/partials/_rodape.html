@@ -1,7 +1,7 @@
 {% load static %}
 {% load sentencas_extras %}
 
-<div id="rodape" class="d-flex flex-column justify-content-center align-items-center text-bg-secondary p-2">
+<div id="rodape" class="d-flex flex-column justify-content-center align-items-center color2 p-2">
     {% if user.is_authenticated %}
         {% exibir_sentenca_aleatoria user %}
     {% else %}

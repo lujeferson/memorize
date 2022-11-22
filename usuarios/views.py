@@ -169,7 +169,7 @@ def recuperar_senha(request):
                 html_message=html_message,
             )
 
-    messages.success(request, 'Solicitação concluída com sucesso. lembre-se de checar a caixa de spam, caso não tenha recebido o e-mail.')
+    messages.warning(request, 'Solicitação concluída com sucesso. Lembre-se de checar a caixa de spam, caso não tenha recebido o e-mail.')
     return redirect('usuarios:login')
 
 
@@ -209,7 +209,7 @@ def excluir_conta(request):
         senha = request.POST['senha']
         usuario = request.user
         if usuario.check_password(senha):
-            messages.success(request, 'Conta e dados associados excluídos com sucesso')
+            messages.warning(request, 'Conta e dados associados excluídos com sucesso')
             usuario.delete()
             return redirect('usuarios:login')
         else: 

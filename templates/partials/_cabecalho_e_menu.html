@@ -1,7 +1,7 @@
 {% load static %}
 
 {% if user.is_authenticated %}
-    <div class="d-flex justify-content-center text-bg-secondary p-2">Bem-vindo, {{ user.first_name }} &lt;{{ user.email }}&gt;</div>
+    <div class="d-flex justify-content-center p-2 color2">Bem-vindo, {{ user.first_name }} &lt;{{ user.email }}&gt;</div>
 {% endif %}
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-2">
