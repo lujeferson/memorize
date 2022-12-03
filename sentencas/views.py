@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import auth, messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -6,10 +7,8 @@ from .models import Autor, Area, Sentenca
 
 # Create your views here.
 # INÍCIO: Sentenças -----------------------------------------------------------
+@login_required
 def sentencas(request):
-    if __usuario_nao_logado(request):
-        return redirect('usuarios:login')
-
     sentencas = Sentenca.objects.filter(ativo=True, usuario=request.user).order_by('id')
 
     if not sentencas:
@@ -24,10 +23,8 @@ def sentencas(request):
     return render(request, 'sentencas/sentencas.html', contexto)
 
 
+@login_required
 def criar_sentenca(request):
-    if __usuario_nao_logado(request):
-        return redirect('usuarios:login')
-
     if request.method != 'POST':
         autores = Autor.objects.filter(ativo=True, usuario=request.user).order_by('nome')
         if not autores:
@@ -61,10 +58,8 @@ def criar_sentenca(request):
     return redirect('sentencas:sentencas')
 
 
+@login_required
 def editar_sentenca(request, sentenca_id):
-    if __usuario_nao_logado(request):
-        return redirect('usuarios:login')
-
     usuario = request.user
     try:
         sentenca = Sentenca.objects.get(pk=sentenca_id, usuario=usuario, ativo=True)
@@ -79,10 +74,8 @@ def editar_sentenca(request, sentenca_id):
     return render(request, 'sentencas/editar_sentenca.html', contexto)
 
 
+@login_required
 def atualizar_sentenca(request):
-    if __usuario_nao_logado(request):
-        return redirect('usuarios:login')
-
     if request.method != 'POST':
         return redirect('sentencas:sentencas')
 
@@ -114,10 +107,8 @@ def atualizar_sentenca(request):
     return redirect('sentencas:sentencas')
 
 
+@login_required
 def excluir_sentenca(request, sentenca_id):
-    if __usuario_nao_logado(request):
-        return redirect('usuarios:login')
-
     try:
         usuario = request.user
         sentenca = Sentenca.objects.get(pk=sentenca_id, usuario=usuario, ativo=True)
@@ -131,10 +122,8 @@ def excluir_sentenca(request, sentenca_id):
 
 
 # INÍCIO: Autores -------------------------------------------------------------
+@login_required
 def autores(request):
-    if __usuario_nao_logado(request):
-        return redirect('usuarios:login')
-
     autores = Autor.objects.filter(ativo=True, usuario=request.user).order_by('nome')
 
     if not autores:
@@ -149,10 +138,8 @@ def autores(request):
     return render(request, 'sentencas/autores.html', contexto)
 
 
+@login_required
 def criar_autor(request):
-    if __usuario_nao_logado(request):
-        return redirect('usuarios:login')
-
     if request.method != 'POST':
         return render(request, 'sentencas/criar_autor.html')
 
@@ -173,10 +160,8 @@ def criar_autor(request):
     return redirect('sentencas:autores')
 
 
+@login_required
 def editar_autor(request, autor_id):
-    if __usuario_nao_logado(request):
-        return redirect('usuarios:login')
-
     usuario = request.user
     try:
         autor = Autor.objects.get(pk=autor_id, usuario=usuario, ativo=True)
@@ -188,10 +173,8 @@ def editar_autor(request, autor_id):
     return render(request, 'sentencas/editar_autor.html', contexto)
 
 
+@login_required
 def atualizar_autor(request):
-    if __usuario_nao_logado(request):
-        return redirect('usuarios:login')
-
     if request.method != 'POST':
         return redirect('sentencas:autores')
 
@@ -212,10 +195,8 @@ def atualizar_autor(request):
     return redirect('sentencas:autores')
 
 
+@login_required
 def excluir_autor(request, autor_id):
-    if __usuario_nao_logado(request):
-        return redirect('usuarios:login')
-
     usuario = request.user
     try:
         autor = Autor.objects.get(pk=autor_id, usuario=usuario, ativo=True)
@@ -229,10 +210,8 @@ def excluir_autor(request, autor_id):
 
 
 # INÍCIO: Áreas do Conhecimento -----------------------------------------------
+@login_required
 def areas(request):
-    if __usuario_nao_logado(request):
-        return redirect('usuarios:login')
-
     areas = Area.objects.filter(ativo=True, usuario=request.user).order_by('nome')
 
     if not areas:
@@ -247,10 +226,8 @@ def areas(request):
     return render(request, 'sentencas/areas.html', contexto)
 
 
+@login_required
 def criar_area(request):
-    if __usuario_nao_logado(request):
-        return redirect('usuarios:login')
-
     if request.method != 'POST':
         return render(request, 'sentencas/criar_area.html')
 
@@ -271,10 +248,8 @@ def criar_area(request):
     return redirect('sentencas:areas')
 
 
+@login_required
 def editar_area(request, area_id):
-    if __usuario_nao_logado(request):
-        return redirect('usuarios:login')
-
     usuario = request.user
     try:
         area = Area.objects.get(pk=area_id, usuario=usuario, ativo=True)
@@ -286,10 +261,8 @@ def editar_area(request, area_id):
     return render(request, 'sentencas/editar_area.html', contexto)
 
 
+@login_required
 def atualizar_area(request):
-    if __usuario_nao_logado(request):
-        return redirect('usuarios:login')
-
     if request.method != 'POST':
         return redirect('sentencas:areas')
 
@@ -310,10 +283,8 @@ def atualizar_area(request):
     return redirect('sentencas:areas')
 
 
+@login_required
 def excluir_area(request, area_id):
-    if __usuario_nao_logado(request):
-        return redirect('usuarios:login')
-
     usuario = request.user
     try:
         area = Area.objects.get(pk=area_id, usuario=usuario, ativo=True)
@@ -327,30 +298,6 @@ def excluir_area(request, area_id):
 
 def index(request):
     return redirect('sentencas:sentencas')
-
-
-# def get_sentenca_aleatoria(usuario, area=None):
-#     if area:
-#         sentenca = Sentenca.objects.filter(usuario=usuario, area=area).order_by("?").first()
-#     else:
-#         sentenca = Sentenca.objects.filter(usuario=usuario).order_by("?").first()
-#     return sentenca
-
-
-# def get_sentencas_aleatorias(usuario):
-#     areas_id_list = Sentenca.objects.filter(usuario=usuario).distinct('area').values_list('area', flat=True)
-
-#     sentencas = []
-#     for area in areas_id_list:
-#         sentenca = get_sentenca_aleatoria(usuario=usuario, area=area)
-#         sentencas.append(sentenca)
-
-#     return sentencas
-
-
-def __usuario_nao_logado(request):
-    usuario_nao_logado = not request.user.is_authenticated
-    return usuario_nao_logado
 
 
 def __ignorar_mensagens_anteriores(request):

@@ -55,6 +55,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'setup.urls'
+LOGIN_URL = '/usuarios/login'
 
 TEMPLATES = [
     {

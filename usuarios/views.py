@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import auth, messages
@@ -65,72 +66,7 @@ def login(request):
     return redirect('home')
 
 
-def logout(request):
-    auth.logout(request)
-    return redirect('home')
-
-
-def configuracoes(request):
-    if __usuario_nao_logado(request):
-        return redirect('usuarios:login')
-
-    usuario = request.user
-    try:
-        configuracoes = Configuracoes_Usuario.objects.get(usuario=usuario)
-    except Configuracoes_Usuario.DoesNotExist:
-        configuracoes = Configuracoes_Usuario(usuario=usuario)
-        configuracoes.save()
-        return redirect('usuarios:configuracoes')
-
-    contexto = {'configuracoes':configuracoes}
-    return render(request, 'usuarios/configuracoes.html', contexto)
-
-
-def definir_configuracoes(request):
-    if __usuario_nao_logado(request):
-        return redirect('usuarios:login')
-
-    if request.method != 'POST':
-        return redirect('usuarios:configuracoes')
-
-    usuario = request.user
-    relatorios_por_dia = request.POST['relatorios_por_dia_value']
-    tipo_de_relatorio = request.POST['tipo_de_relatorio_value']
-    configuracoes = Configuracoes_Usuario.objects.get(usuario=usuario)
-    configuracoes.relatorios_por_dia = relatorios_por_dia
-    configuracoes.tipo_de_relatorio = tipo_de_relatorio
-    configuracoes.save()
-    messages.success(request, 'Configurações atualizadas')
-
-    return redirect('usuarios:configuracoes')
-
-
-def redefinir_senha(request):
-    if __usuario_nao_logado(request):
-        return redirect('usuarios:login')
-
-    if request.method == 'POST':
-        usuario = request.user
-        senha = request.POST['senha']
-
-        if not usuario.check_password(senha):
-            messages.error(request, 'Senha incorreta')
-            return redirect('usuarios:configuracoes')
-
-        senha_nova = request.POST['senha_nova']
-        senha_nova2 = request.POST['senha_nova2']
-        if __campo_vazio(senha) or __campo_vazio(senha_nova) or __campo_vazio(senha_nova2):
-            messages.error(request, 'Preencha os campos de senha')
-            return redirect('usuarios:configuracoes')
-        
-        if senha_nova != senha_nova2:
-            messages.error(request, 'Senhas novas não conferem')
-            return redirect('usuarios:configuracoes')
-
-        usuario.set_password(senha_nova)
-        usuario.save()
-        messages.success(request, 'Senha alterada com sucesso')
-
+def index(request):
     return redirect('usuarios:configuracoes')
 
 
@@ -173,10 +109,72 @@ def recuperar_senha(request):
     return redirect('usuarios:login')
 
 
-def definir_senha(request):
-    if not __usuario_nao_logado(request):
-        return redirect('usuarios:login')
+@login_required
+def logout(request):
+    auth.logout(request)
+    return redirect('home')
 
+
+@login_required
+def configuracoes(request):
+    usuario = request.user
+    try:
+        configuracoes = Configuracoes_Usuario.objects.get(usuario=usuario)
+    except Configuracoes_Usuario.DoesNotExist:
+        configuracoes = Configuracoes_Usuario(usuario=usuario)
+        configuracoes.save()
+        return redirect('usuarios:configuracoes')
+
+    contexto = {'configuracoes':configuracoes}
+    return render(request, 'usuarios/configuracoes.html', contexto)
+
+
+@login_required
+def definir_configuracoes(request):
+    if request.method != 'POST':
+        return redirect('usuarios:configuracoes')
+
+    usuario = request.user
+    relatorios_por_dia = request.POST['relatorios_por_dia_value']
+    tipo_de_relatorio = request.POST['tipo_de_relatorio_value']
+    configuracoes = Configuracoes_Usuario.objects.get(usuario=usuario)
+    configuracoes.relatorios_por_dia = relatorios_por_dia
+    configuracoes.tipo_de_relatorio = tipo_de_relatorio
+    configuracoes.save()
+    messages.success(request, 'Configurações atualizadas')
+
+    return redirect('usuarios:configuracoes')
+
+
+@login_required
+def redefinir_senha(request):
+    if request.method == 'POST':
+        usuario = request.user
+        senha = request.POST['senha']
+
+        if not usuario.check_password(senha):
+            messages.error(request, 'Senha incorreta')
+            return redirect('usuarios:configuracoes')
+
+        senha_nova = request.POST['senha_nova']
+        senha_nova2 = request.POST['senha_nova2']
+        if __campo_vazio(senha) or __campo_vazio(senha_nova) or __campo_vazio(senha_nova2):
+            messages.error(request, 'Preencha os campos de senha')
+            return redirect('usuarios:configuracoes')
+        
+        if senha_nova != senha_nova2:
+            messages.error(request, 'Senhas novas não conferem')
+            return redirect('usuarios:configuracoes')
+
+        usuario.set_password(senha_nova)
+        usuario.save()
+        messages.success(request, 'Senha alterada com sucesso')
+
+    return redirect('usuarios:configuracoes')
+
+
+@login_required
+def definir_senha(request):
     if request.method == 'GET':
         token = request.GET['r']
         contexto = {'token':token}
@@ -201,10 +199,8 @@ def definir_senha(request):
     return redirect('usuarios:login')
 
 
+@login_required
 def excluir_conta(request):
-    if __usuario_nao_logado(request):
-        return redirect('usuarios:login')
-
     if request.method == 'POST':
         senha = request.POST['senha']
         usuario = request.user
@@ -218,21 +214,12 @@ def excluir_conta(request):
         return redirect('usuarios:configuracoes')
 
 
-def index(request):
-    return redirect('usuarios:configuracoes')
-
-
 def __campo_vazio(campo):
     return not campo.strip()
 
 
 def __campos_diferentes(campo, campo2):
     return campo != campo2
-
-
-def __usuario_nao_logado(request):
-    usuario_nao_logado = not request.user.is_authenticated
-    return usuario_nao_logado
 
 
 def __ignorar_mensagens_anteriores(request):
